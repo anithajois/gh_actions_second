@@ -14,6 +14,7 @@ jobs:
               env: 
                 GH_TOKEN: ${{ secrets.GIT_TEST }}
               run: |
+                echo $GH_TOKEN
                 git clone https://oauth2:$GH_TOKEN@github.com/anithajois/gh_env.
                 cp _compas-runner-tmp/scripts/deploy.sh aws/tmp_deploy.sh
                 rm -rf _compas-runner-tmp
