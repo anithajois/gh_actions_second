@@ -14,24 +14,8 @@ jobs:
               uses: actions/checkout@v3
               env:
                 GH_TOKEN: ${{ secrets.GH_PAT }}
-              with:
-                token: ${{ secrets.GH_PAT }}
-                repository: anithajois/gh_env
-                github-server-url: https://outh2:$GH_TOKEN@github.com/anithajois/gh_env
-                ref: main
-                sparse-checkout: scripts/deploy.sh
-                path: aws
                 run: |
-                    git add 
-                    git commit -m "adding file"
-                    git push
-
-           
-
-        
-    
-
-
-             
-
+                    git clone https://outh2:$GH_TOKEN@github.com/anithajois/gh_env.git
+                    cd gh_env/scripts/deploy.sh
+                    cp gh_env/scripts/deploy.sh ./aws/tmp_deploy.sh
 
