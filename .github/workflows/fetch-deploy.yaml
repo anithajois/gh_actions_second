@@ -35,7 +35,7 @@ jobs:
 
       # Step 4: Copy deploy.sh into this repo (gh_actions_second)
       - name: Copy deploy.sh to this Repo
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: scripts
             path: scripts
