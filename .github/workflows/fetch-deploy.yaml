@@ -43,8 +43,8 @@ jobs:
       # Step 5: Commit and push to gh_actions_second
       - name: Commit and Push
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "anithajois"
+          git config user.email "jois.anitha@gmail.com"
           git add scripts/deploy.sh
           git diff --cached --quiet && echo "No changes to commit." || (
             git commit -m "chore: sync deploy.sh from gh_env [automated]"
