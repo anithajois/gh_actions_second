@@ -39,4 +39,10 @@ jobs:
         with:
             name: scripts
             path: source_repo/scripts
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+            name: scripts
+      - name: Output contents
+        run: ls
         
