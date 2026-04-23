@@ -20,6 +20,18 @@ jobs:
                 -o deploy.sh \
                 "https://github.com/api/v3/repos/anithajois/gh_env/scripts/deploy.sh"
 
+            - name: Verify the file exists
+              run: |
+                ls -la deploy.sh
+                cat deploy.sh
+
+            - name: Commit and Push
+              run: |
+                git add deploy.sh
+                git diff --cached --quiet || git commit -m "adding file"
+                git push
+
+
              
 
 
