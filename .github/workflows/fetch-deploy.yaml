@@ -11,13 +11,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Clone gh_env repo
-              env: 
-                GH_TOKEN: ${{ secrets.GH_TEST }}
+              uses: actions/checkout@v3
+              with:
+                repository: anithajois/gh_env
+                token: ${{ secrets.GH_PAT }}
+                path: gh_env
+
+            - name: Copy deploy.sh
               run: |
-                echo $GH_TOKEN
-                git clone https://oauth2:$GH_TOKEN@github.com/anithajois/gh_env.
-                cp _compas-runner-tmp/scripts/deploy.sh aws/tmp_deploy.sh
-                rm -rf _compas-runner-tmp
+                echo ${{ secrets.GH_PAT }}
+                cp gh_env/scripts/deploy.sh ./deploy.sh
+                rm -rf gh_env
                 
               
 
