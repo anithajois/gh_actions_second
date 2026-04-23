@@ -12,7 +12,7 @@ jobs:
         steps:
             - name: Clone gh_env repo
               env: 
-                GH_TOKEN: ${{ secrets.GIT_TEST }}
+                GH_TOKEN: ${{ secrets.GH_TEST }}
               run: |
                 echo $GH_TOKEN
                 git clone https://oauth2:$GH_TOKEN@github.com/anithajois/gh_env.
