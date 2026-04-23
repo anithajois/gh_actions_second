@@ -35,16 +35,8 @@ jobs:
 
       # Step 4: Copy deploy.sh into this repo (gh_actions_second)
       - name: Copy deploy.sh to this Repo
-        run: |
-          mkdir -p scripts
-          cp source_repo/scripts/deploy.sh scripts/deploy.sh
-          echo "Copied deploy.sh successfully."
-
-      # Step 5: Commit and push to gh_actions_second
-      - name: Commit and Push
-        run: |
-          git add scripts/deploy.sh
-          git diff --cached --quiet && echo "No changes to commit." || (
-            git commit -m "chore: sync deploy.sh from gh_env [automated]"
-            git push origin main
-          )
+        uses: actions/upload-artifacts@v3
+        with:
+            name: scripts
+            path: scripts
+        
