@@ -11,25 +11,25 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Fetch Deploy.sh directly
+              uses: actions/checkout@v3
               env:
                 GH_TOKEN: ${{ secrets.GH_PAT }}
-              run: |
-                curl -L \
-                -H "Authorization: Bearer $GH_TOKEN" \
-                -H "Accept: application/vnd.github.v3.raw" \
-                -o deploy.sh \
-                "https://github.com/api/v3/repos/anithajois/gh_env/scripts/deploy.sh"
+              with:
+                token: ${{ secrets.GH_PAT }}
+                repository: anithajois/gh_env
+                github-server-url: https://outh2:$GH_TOKEN@github.com/anithajois/gh_env
+                ref: main
+                sparse-checkout: scripts/deploy.sh
+                path: aws
+                run: |
+                    git add 
+                    git commit -m "adding file"
+                    git push
 
-            - name: Verify the file exists
-              run: |
-                ls -la deploy.sh
-                cat deploy.sh
+           
 
-            - name: Commit and Push
-              run: |
-                git add deploy.sh
-                git diff --cached --quiet || git commit -m "adding file"
-                git push
+        
+    
 
 
              
