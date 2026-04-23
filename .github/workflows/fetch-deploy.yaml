@@ -8,7 +8,7 @@ on:
 
 jobs: 
     deploy-scripts:
-        runs-on: self-hosted
+        runs-on: ubuntu-latest
         steps:
             - name: Clone gh_env repo
               env: 
