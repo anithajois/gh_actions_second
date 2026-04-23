@@ -10,20 +10,16 @@ jobs:
     deploy-scripts:
         runs-on: ubuntu-latest
         steps:
-            - name: Clone gh_env repo
-              uses: actions/checkout@v3
-              with:
-                repository: anithajois/gh_env
-                token: ${{ secrets.GH_PAT }}
-                path: gh_env
-
-            - name: Copy deploy.sh
+            - name: Fetch Deploy.sh directly
+              env:
+                GH_TOKEN: ${{ secrets.GH_PAT }}
               run: |
-                echo ${{ secrets.GH_PAT }}
-                cp gh_env/scripts/deploy.sh ./deploy.sh
-                rm -rf gh_env
-                
-              
+                curl -L \
+                -H "Authorization: Bearer $GH_TOKEN" \
+                -H "Accept: application/vnd.github.v3.raw" \
+                -o deploy.sh \
+                "https://github.com/api/v3/repos/anithajois/gh_env/scripts/deploy.sh"
 
+             
 
 
