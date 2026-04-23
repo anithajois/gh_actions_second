@@ -10,21 +10,13 @@ jobs:
     deploy-scripts:
         runs-on: self-hosted
         steps:
-            - name: Checkout to Repo where the scripts are there
-              uses: actions/checkout@v4
-              with: 
-                token: ${{ secrets.GH_TEST }}
-                ref: main
-                repository: anithajois/gh_env
-                github-server-url: https://github.com/
-                sparse-checkout: scripts/deploy.sh
-                sparse-checkout-cone-mode: false
-                path: _compas-runner-tmp
-
-            - name: Copy Deploy.sh into workspace
+            - name: Clone gh_env repo
+              env: 
+                GH_TOKEN: ${{ secrets.GIT_TEST }}
               run: |
-                 cp _compas-runner-tmp/scripts/deploy.sh aws/tmp_deploy.sh
-                 rm -rf _compas-runner-tmp
+                git clone https://oauth2:$GH_TOKEN@github.com/anithajois/gh_env.
+                cp _compas-runner-tmp/scripts/deploy.sh aws/tmp_deploy.sh
+                rm -rf _compas-runner-tmp
                 
               
 
