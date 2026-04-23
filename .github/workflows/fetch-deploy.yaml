@@ -1,21 +1,52 @@
-name: Deploy Scripts
+name: Copy Deploy Script from gh_env
 
-on: 
-    push: 
-        branches: 
-            - main
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
 
+jobs:
+  copy-deploy-script:
+    runs-on: ubuntu-latest
 
-jobs: 
-    deploy-scripts:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Fetch Deploy.sh directly
-              uses: actions/checkout@v3
-              env:
-                GH_TOKEN: ${{ secrets.GH_PAT }}
-                run: |
-                    git clone https://outh2:$GH_TOKEN@github.com/anithajois/gh_env.git
-                    cd gh_env/scripts/deploy.sh
-                    cp gh_env/scripts/deploy.sh ./aws/tmp_deploy.sh
+    steps:
+      # Step 1: Checkout THIS repo (gh_actions_second) - target
+      - name: Checkout Target Repo (gh_actions_second)
+        uses: actions/checkout@v4
 
+      # Step 2: Checkout the SOURCE repo (gh_env) into a subfolder
+      - name: Checkout Source Repo (gh_env)
+        uses: actions/checkout@v4
+        with:
+          repository: anithajois/gh_env
+          ref: main
+          token: ${{ secrets.GH_PAT }}
+          path: source_repo
+
+      # Step 3: Verify deploy.sh exists in source repo
+      - name: Verify deploy.sh exists
+        run: |
+          if [ ! -f "source_repo/scripts/deploy.sh" ]; then
+            echo "Error: scripts/deploy.sh not found in gh_env!"
+            exit 1
+          fi
+          echo "scripts/deploy.sh found successfully."
+
+      # Step 4: Copy deploy.sh into this repo (gh_actions_second)
+      - name: Copy deploy.sh to this Repo
+        run: |
+          mkdir -p scripts
+          cp source_repo/scripts/deploy.sh scripts/deploy.sh
+          echo "Copied deploy.sh successfully."
+
+      # Step 5: Commit and push to gh_actions_second
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/deploy.sh
+          git diff --cached --quiet && echo "No changes to commit." || (
+            git commit -m "chore: sync deploy.sh from gh_env [automated]"
+            git push origin main
+          )
